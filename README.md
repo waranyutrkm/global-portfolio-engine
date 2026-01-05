@@ -26,22 +26,17 @@
 
 ---
 
-## 🧠 Key Capabilities
-
-```
-## 📊 Strategy & Allocation (Complete Mathematical Definition)
+## 📊 Strategy & Allocation  
+### Complete Mathematical Definition
 
 ด้านล่างคือกลยุทธ์การจัดสรรสินทรัพย์ทั้งหมดที่ใช้ในระบบ  
-พร้อม **สูตรคำนวณน้ำหนัก (Weighting Formula)** อย่างชัดเจน
+พร้อมสูตรคำนวณน้ำหนัก (Weighting Formula) อย่างชัดเจน
 
 ---
 
 ### 1️⃣ Equal Weight (1/N)
 
-**แนวคิด:**  
-กระจายน้ำหนักเท่ากันทุกสินทรัพย์ใน Universe
-
-**Formula:**
+**Formula**
 ```
 
 w_i = 1 / N
@@ -49,80 +44,58 @@ w_i = 1 / N
 ```
 
 - N = จำนวนสินทรัพย์ทั้งหมด
-- w_i = น้ำหนักของสินทรัพย์ตัวที่ i
 
 ---
 
 ### 2️⃣ Rank All (Momentum Weighted)
 
-**แนวคิด:**  
-เรียงสินทรัพย์ตามค่า Momentum (สูง → ต่ำ)  
-ให้น้ำหนักลดหลั่นตามอันดับ
-
-**Formula:**
+**Formula**
 ```
 
-Rank_i = ลำดับของ Momentum (1 = ดีที่สุด)
+Rank_i = ลำดับ Momentum (1 = สูงสุด)
 
 w_i = (N - Rank_i + 1) / Σ(N - Rank_j + 1)
 
 ```
 
-- N = จำนวนสินทรัพย์ทั้งหมด
-- Σ = ผลรวมทุกสินทรัพย์
-
 ---
 
 ### 3️⃣ Top 3 Leader (Equal Weight)
 
-**แนวคิด:**  
-เลือกเฉพาะ 3 ตัวที่ Momentum สูงสุด  
-แล้วกระจายน้ำหนักเท่ากัน
-
-**Formula:**
+**Formula**
 ```
 
-w_i = 1 / K   ,  i ∈ Top K
-w_i = 0       ,  otherwise
+w_i = 1 / K   , i ∈ Top K
+w_i = 0       , otherwise
 
 ```
 
-- K = 3 (หรือ ≤ N ถ้ามีน้อยกว่า 3)
+- K = 3
 
 ---
 
 ### 4️⃣ Top 3 Leader (Rank Weighted)
 
-**แนวคิด:**  
-เลือก 3 ตัวที่ดีที่สุด  
-ให้น้ำหนักตามอันดับ (Rank-based)
-
-**Formula:**
+**Formula**
 ```
 
-Rank_i ∈ {1, 2, 3}
+Rank_i ∈ {1,2,3}
 
 w_i = (K - Rank_i + 1) / Σ(K - Rank_j + 1)
 
 ```
 
-- K = 3
-- Σ = ผลรวมเฉพาะ Top 3
-
 ---
 
 ### 5️⃣ Top 50% Selection
 
-**แนวคิด:**  
-ลงทุนเฉพาะครึ่งบนของสินทรัพย์ที่มี Momentum สูงสุด
-
-**Formula:**
+**Formula**
 ```
 
 K = ceil(N / 2)
 
-w_i = 1 / K   ,  i ∈ Top 50%
-w_i = 0       ,  otherwise
+w_i = 1 / K   , i ∈ Top 50%
+w_i = 0       , otherwise
 
 ```
 
@@ -130,22 +103,18 @@ w_i = 0       ,  otherwise
 
 ### 6️⃣ Absolute Momentum (ROC > 0)
 
-**แนวคิด:**  
-ลงทุนเฉพาะสินทรัพย์ที่ Momentum เป็นบวก  
-ที่เหลือถือเป็น Cash (Implicit)
-
-**Momentum Definition:**
+**Momentum**
 ```
 
 ROC_i = P_t / P_(t-L) - 1
 
 ```
 
-**Weight Formula:**
+**Weight**
 ```
 
-w_i = 1 / M   ,  ROC_i > 0
-w_i = 0       ,  ROC_i ≤ 0
+w_i = 1 / M   , ROC_i > 0
+w_i = 0       , ROC_i ≤ 0
 
 ```
 
@@ -155,82 +124,67 @@ w_i = 0       ,  ROC_i ≤ 0
 
 ### 7️⃣ Dual Momentum (Relative + Absolute)
 
-**แนวคิด:**  
-ต้องผ่าน 2 เงื่อนไขพร้อมกัน:
-1. อยู่ในกลุ่ม Top K (Relative Momentum)
-2. ROC > 0 (Absolute Momentum)
-
-**Formula:**
+**Formula**
 ```
 
-Eligible_i = { i | Rank_i ≤ K  AND  ROC_i > 0 }
+Eligible_i = { i | Rank_i ≤ K AND ROC_i > 0 }
 
-w_i = 1 / |Eligible|   ,  i ∈ Eligible
-w_i = 0                ,  otherwise
+w_i = 1 / |Eligible| , i ∈ Eligible
+w_i = 0              , otherwise
 
 ```
 
 - K = 3
-- |Eligible| = จำนวนสินทรัพย์ที่ผ่านเงื่อนไข
 
 ---
 
 ### 8️⃣ Inverse Volatility (Risk Parity)
 
-**แนวคิด:**  
-ให้น้ำหนักผกผันกับความผันผวน  
-สินทรัพย์ที่เสี่ยงน้อย → น้ำหนักมาก
-
-**Volatility Definition:**
+**Volatility**
 ```
 
 σ_i = StdDev(returns_i)
 
 ```
 
-**Weight Formula:**
+**Weight**
 ```
 
 w_i = (1 / σ_i) / Σ(1 / σ_j)
 
 ```
 
-- σ_i = Volatility ของสินทรัพย์ i
-- Σ = ผลรวมทุกสินทรัพย์
-
 ---
 
 ## 📐 Rebalancing & Transaction Cost
 
-### Rebalance Condition
+**Rebalance Rule**
 ```
 
-Rebalance ทุก ๆ RB วัน
+Rebalance every RB days
 
 ```
 
-### Turnover
+**Turnover**
 ```
 
 Turnover = Σ |w_i(new) - w_i(old)|
 
 ```
 
-### Transaction Cost Impact
+**Transaction Cost**
 ```
 
-Equity_after_fee = Equity_before × (1 - Turnover × Fee)
+Equity_after = Equity_before × (1 - Turnover × Fee)
 
 ```
-
-- Fee = % ต่อการปรับพอร์ต
 
 ---
 
-## 🧠 Summary Table
+## 🧠 Strategy Summary
 
-| Strategy | Selection | Weighting Logic |
-|--------|----------|----------------|
+| Strategy | Selection | Weighting |
+|--------|----------|-----------|
 | Equal | All | Equal |
 | Rank | All | Rank-based |
 | Top3 | Top 3 | Equal |
@@ -239,24 +193,26 @@ Equity_after_fee = Equity_before × (1 - Turnover × Fee)
 | AbsMom | ROC > 0 | Equal |
 | DualMom | Top K + ROC > 0 | Equal |
 | InvVol | All | Inverse Volatility |
-```
 
+---
 
-### 📈 Portfolio Analytics
+## 📈 Portfolio Analytics
 - CAGR
 - Sharpe Ratio
 - Max Drawdown
-- Turnover & Transaction Cost Impact
+- Turnover
 - Benchmark Comparison
 
-### 🔬 Advanced Quant Visualization
-- Equity Curve (Linear / Log Scale)
-- Drawdown Waterfall
-- Hyper-Parameter Sharpe Surface
-- Monte Carlo Simulation (1Y Forward)
-- Asset Correlation Matrix
-- Monthly Return & Drawdown Heatmaps
-- Full Rebalance & Allocation Logs
+---
+
+## 🔬 Visualization
+- Equity Curve (Linear / Log)
+- Drawdown Curve
+- Sharpe Surface (LB × RB)
+- Monte Carlo Simulation
+- Correlation Matrix
+- Monthly Heatmaps
+- Rebalance Logs
 
 ---
 
@@ -265,120 +221,35 @@ Equity_after_fee = Equity_before × (1 - Turnover × Fee)
 | Layer | Technology |
 |------|-----------|
 | UI | HTML5, TailwindCSS |
-| Charts | Chart.js, Plotly.js |
+| Charts | Chart.js, Plotly |
 | Math | Math.js |
-| Runtime | Vanilla JavaScript |
-| Deployment | GitHub Pages |
-
-> ⚡ Zero backend • Zero build step • Instant deploy
-
----
-
-## 🖥️ How It Works (Conceptual Flow)
-
-```
-
-Asset Universe
-↓
-Signal Generation (Momentum / Volatility)
-↓
-Strategy Weighting Logic
-↓
-Rebalancing Engine
-↓
-Portfolio Simulation
-↓
-Risk & Performance Analytics
-
-```
-
----
-
-## ▶️ Usage
-
-1. Open the **Live Demo**
-2. Select:
-   - Strategy Logic
-   - Lookback & Rebalance Windows
-   - Asset Universe
-3. Click **🚀 RUN QUANT ENGINE**
-4. Explore results across:
-   - KPIs
-   - Charts
-   - Optimization Matrix
-   - Strategy Logs
+| Runtime | Vanilla JS |
+| Deploy | GitHub Pages |
 
 ---
 
 ## 🧪 Data Model
 
-> This project uses **stochastic market simulation** (Geometric Brownian Motion)  
-> to demonstrate portfolio behavior and analytics logic.
-
-📌 **Not connected to real-time market data**
+Uses **stochastic market simulation (GBM)**  
+Not connected to real market data.
 
 ---
 
 ## ⚠️ Disclaimer
 
-This project is for:
-- Educational
-- Research
-- Strategy prototyping purposes only
-
-❗ **Not investment advice**  
-❗ **Do not use for live trading decisions**
-
----
-
-## 🗂️ Project Structure
-
-```
-
-global-portfolio-engine/
-└── index.html   # Entire application (UI + Engine)
-
-````
-
----
-
-## 🛠️ Local Development
-
-```bash
-# No install needed
-# Just open index.html in your browser
-````
-
-Or use a simple local server:
-
-```bash
-python -m http.server
-```
+For educational & research purposes only.  
+**Not investment advice.**
 
 ---
 
 ## 📜 License
-
 MIT License
-Free to use, modify, and distribute with attribution.
 
 ---
 
 ## 👤 Author
-
-**Waranyutr T.**
+**Waranyu Teerakomen**  
 Quant Research & Portfolio Analytics
+```
 
----
-
-## ⭐ Acknowledgement
-
-Inspired by:
-
-* Quantitative Asset Allocation
-* Momentum Investing
-* Risk Parity Frameworks
-
----
-
-> If you find this project useful, feel free to ⭐ star the repository
+บอกมาได้เลยครับ โปรเจกต์นี้ “ถึงระดับ research จริง” แล้ว 🔥📊
