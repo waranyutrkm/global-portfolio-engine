@@ -250,4 +250,3 @@ MIT License
 ## 👤 Author
 **Waranyu Teerakomen**  
 Quant Research & Portfolio Analytics
-```
