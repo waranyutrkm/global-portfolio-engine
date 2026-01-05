@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>Global Portfolio Engine v30.5 — Professional Quant Suite</title>
+<title>Global Portfolio Engine v33.0 — Precision Quant with Help Guide</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- ================= LIBRARIES ================= -->
@@ -54,25 +54,32 @@ body { transition: background-color .3s, color .3s; }
 .step-card { border-left: 4px solid #FCD535; padding-left: 20px; margin-bottom: 2.5rem; }
 .formula-box { background: rgba(252, 213, 53, 0.08); border: 1px solid rgba(252, 213, 53, 0.3); border-radius: 12px; }
 
-.strat-card-info { border: 1px solid #ddd; border-radius: 20px; padding: 24px; background: rgba(255,255,255,0.5); position: relative; overflow: hidden; }
-.dark .strat-card-info { border-color: #333; background: rgba(0,0,0,0.2); }
-.strat-card-info::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: #FCD535; }
+/* Tooltip Styles */
+.tooltip-container { position: relative; display: inline-block; cursor: help; }
+.tooltip-icon { font-size: 10px; background: #eee; color: #848E9C; width: 14px; height: 14px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-left: 4px; transition: all 0.2s; }
+.dark .tooltip-icon { background: #333; color: #94a3b8; }
+.tooltip-container:hover .tooltip-icon { background: #FCD535; color: black; }
 
-/* Table Sorting Styles */
-th.sortable { cursor: pointer; transition: background 0.2s; position: relative; }
-th.sortable:hover { background: rgba(252, 213, 53, 0.1); }
-th.sortable i { font-size: 10px; margin-left: 4px; opacity: 0.5; }
+.tooltip-text { 
+  visibility: hidden; width: 220px; background-color: #1E2329; color: #fff; text-align: left; border-radius: 8px; padding: 10px; 
+  position: absolute; z-index: 100; bottom: 125%; left: 50%; margin-left: -110px; opacity: 0; transition: opacity 0.3s; 
+  font-size: 11px; font-weight: 400; font-family: 'Sarabun', sans-serif; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.2); pointer-events: none;
+}
+.dark .tooltip-text { background-color: #F0B90B; color: #181A20; }
+.tooltip-text::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #1E2329 transparent transparent transparent; }
+.dark .tooltip-text::after { border-color: #F0B90B transparent transparent transparent; }
+.tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; }
+
+/* Sorting Icons */
+th.sortable { cursor: pointer; position: relative; }
+th.sortable i { font-size: 10px; margin-left: 4px; opacity: 0.3; }
 th.sorted-asc i, th.sorted-desc i { opacity: 1; color: #FCD535; }
 
-.filter-input { width: 100%; font-size: 9px; padding: 4px 6px; border-radius: 4px; border: 1px solid #ddd; background: white; color: #333; outline: none; margin-top: 4px; font-family: 'JetBrains Mono'; }
+.filter-input { width: 100%; font-size: 9px; padding: 4px 6px; border-radius: 6px; border: 1px solid #ddd; background: white; outline: none; margin-top: 4px; font-family: 'JetBrains Mono'; }
 .dark .filter-input { background: #1E2329; border-color: #444; color: #EAECEF; }
-
 .kpi-bench-val { font-size: 0.72rem; color: #94a3b8; font-weight: 700; margin-top: 0.3rem; border-top: 1px dashed rgba(148, 163, 184, 0.3); padding-top: 0.3rem; display: block; }
 
-/* Sidebar Inputs UI Refinement */
-.opt-field-container { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
-.opt-label { font-size: 10px; font-weight: 700; color: #848E9C; text-transform: uppercase; letter-spacing: 0.5px; margin-left: 2px; }
-.opt-input { background: rgba(255,255,255,0.8); border: 1.5px solid #eee; border-radius: 12px; padding: 10px 14px; font-family: 'JetBrains Mono'; font-size: 12px; outline: none; transition: all 0.2s; }
+.opt-input { background: rgba(255,255,255,0.9); border: 1.5px solid #eee; border-radius: 12px; padding: 10px 14px; font-family: 'JetBrains Mono'; font-size: 12px; outline: none; transition: all 0.2s; width: 100%; }
 .dark .opt-input { background: #1E2329; border-color: #333; color: #EAECEF; }
 .opt-input:focus { border-color: #FCD535; box-shadow: 0 0 0 3px rgba(252, 213, 53, 0.1); }
 </style>
@@ -86,18 +93,14 @@ th.sorted-asc i, th.sorted-desc i { opacity: 1; color: #FCD535; }
     <div>
       <h1 class="font-bold text-lg flex items-center gap-2 text-dark-900 dark:text-white">
         <span class="text-2xl">🏛️</span> Global Portfolio Engine
-        <span class="text-[10px] bg-brand-500 text-black px-1.5 py-0.5 rounded font-bold mono">v30.5 SUPREME</span>
+        <span class="text-[10px] bg-brand-500 text-black px-1.5 py-0.5 rounded font-bold mono">v33.0 ULTRA</span>
       </h1>
     </div>
-    
     <nav class="flex gap-1 bg-gray-100 dark:bg-dark-800 p-1 rounded-lg">
         <button onclick="UI.switchTab('dashboard')" id="btn-tab-dashboard" class="px-5 py-1.5 text-xs font-bold rounded-md bg-white dark:bg-dark-900 shadow-sm text-brand-600 transition-all">Dashboard</button>
         <button onclick="UI.switchTab('workflow')" id="btn-tab-workflow" class="px-5 py-1.5 text-xs font-bold rounded-md text-gray-400 hover:text-brand-500 transition-all">Workflow & Logic</button>
     </nav>
-
-    <div class="flex items-center gap-4">
-        <button onclick="UI.toggleTheme()" class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 dark:bg-dark-800 hover:text-brand-500 transition-all">🌓</button>
-    </div>
+    <button onclick="UI.toggleTheme()" class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 dark:bg-dark-800 hover:text-brand-500 transition-all">🌓</button>
   </div>
 </header>
 
@@ -107,15 +110,21 @@ th.sorted-asc i, th.sorted-desc i { opacity: 1; color: #FCD535; }
 <aside class="col-span-12 lg:col-span-3 space-y-4">
 <div class="glass rounded-[2rem] p-7 border-t-4 border-t-brand-500 sticky top-24 shadow-xl">
   <div class="mb-6 flex items-center justify-between">
-    <h3 class="text-xs font-black uppercase text-gray-500 tracking-widest">Engine Dashboard</h3>
-    <span class="text-[9px] bg-green-500/10 text-green-500 px-2 py-0.5 rounded font-bold uppercase">PRO Mode</span>
+    <h3 class="text-xs font-black uppercase text-gray-500 tracking-widest">Engine Control Center</h3>
+    <span class="text-[9px] bg-green-500/10 text-green-500 px-2 py-0.5 rounded font-bold uppercase tracking-tighter">Ready</span>
   </div>
 
-  <!-- STRATEGY SELECT -->
-  <div class="opt-field-container">
-      <label class="opt-label">Base Strategy Logic</label>
-      <select id="cfg-strategy" class="opt-input appearance-none cursor-pointer font-bold">
-        <option value="ALL">★ RUN ALL (Compare 8 Strats)</option>
+  <!-- STRATEGY WITH HELP -->
+  <div class="mb-5">
+      <label class="text-[10px] font-bold text-gray-400 uppercase flex items-center">
+        Portfolio Logic
+        <div class="tooltip-container">
+            <span class="tooltip-icon">?</span>
+            <div class="tooltip-text">ตรรกะที่ใช้คัดเลือกและคำนวณน้ำหนักสินทรัพย์ เช่น ตามลำดับความแรง (Momentum) หรือ กระจายความเสี่ยงตามความผันผวน (Risk Parity)</div>
+        </div>
+      </label>
+      <select id="cfg-strategy" class="opt-input appearance-none cursor-pointer font-bold mt-1">
+        <option value="ALL">★ RUN ALL (Batch Comparison)</option>
         <option value="Equal">Equal Weight (1/N)</option>
         <option value="Rank" selected>Rank All (Momentum Weights)</option>
         <option value="Top3">Top 3 Leader (Equal)</option>
@@ -127,41 +136,47 @@ th.sorted-asc i, th.sorted-desc i { opacity: 1; color: #FCD535; }
       </select>
   </div>
 
-  <div class="opt-field-container">
-    <label class="opt-label">Backtest Window</label>
-    <div class="grid grid-cols-2 gap-3">
+  <!-- BACKTEST PERIOD WITH HELP -->
+  <div class="mb-5">
+    <label class="text-[10px] font-bold text-gray-400 uppercase flex items-center">
+        Backtest Period
+        <div class="tooltip-container">
+            <span class="tooltip-icon">?</span>
+            <div class="tooltip-text">ช่วงเวลาที่ต้องการทดสอบย้อนหลัง ระบบจะจำลองข้อมูลราคาตั้งแต่อดีตเพื่อวัดผลงานของกลยุทธ์</div>
+        </div>
+    </label>
+    <div class="grid grid-cols-2 gap-3 mt-1">
       <input type="date" id="cfg-start" class="opt-input text-[11px]">
       <input type="date" id="cfg-end" class="opt-input text-[11px]">
     </div>
   </div>
 
-  <!-- ASSETS -->
-  <div class="opt-field-container">
-    <label class="opt-label">Portfolio Assets (Tickers)</label>
-    <div class="flex gap-2 mb-2">
-      <input id="cfg-add" placeholder="e.g. SPY" class="opt-input flex-1 uppercase text-xs">
+  <!-- ASSETS WITH HELP -->
+  <div class="mb-5">
+    <label class="text-[10px] font-bold uppercase text-gray-400 flex items-center">
+        Universe Assets
+        <div class="tooltip-container">
+            <span class="tooltip-icon">?</span>
+            <div class="tooltip-text">รายการสินทรัพย์ (ETF) ที่ต้องการให้กลยุทธ์พิจารณาลงทุนในพอร์ตโฟลิโอ</div>
+        </div>
+    </label>
+    <div class="flex gap-2 mt-1 mb-2">
+      <input id="cfg-add" placeholder="e.g. VOO" class="opt-input flex-1 uppercase text-xs">
       <button onclick="UI.addAsset()" class="w-12 h-11 rounded-xl bg-gray-200 dark:bg-dark-700 font-bold hover:bg-brand-500 transition-all">+</button>
     </div>
-    
     <select onchange="UI.suggestAsset(this.value); this.value='';" class="opt-input text-[11px] cursor-pointer appearance-none">
-        <option value="">-- แนะนำตามกลุ่ม (Universe) --</option>
-        <optgroup label="Broad US & Global">
+        <option value="">-- เพิ่มสินทรัพย์แนะนำตามหมวด --</option>
+        <optgroup label="Index & Broad Stocks">
             <option value="VOO">VOO (S&P 500 Index)</option>
             <option value="QQQ">QQQ (Nasdaq 100 Index)</option>
             <option value="VT">VT (World Stock Index)</option>
-            <option value="VTI">VTI (US Total Stock)</option>
         </optgroup>
-        <optgroup label="Growth & Thematic">
-            <option value="SMH">SMH (Semiconductors)</option>
-            <option value="XLK">XLK (Technology Sector)</option>
-            <option value="ARKK">ARKK (Innovation Fund)</option>
-        </optgroup>
-        <optgroup label="Fixed Income & Safety">
+        <optgroup label="Income & Bonds">
+            <option value="SCHD">SCHD (US Dividend Growth)</option>
             <option value="BND">BND (Total Bond Market)</option>
             <option value="TLT">TLT (20+ Yr Treasury)</option>
-            <option value="SCHD">SCHD (Dividend Growth)</option>
         </optgroup>
-        <optgroup label="Alternatives">
+        <optgroup label="Alts & Commodities">
             <option value="GLD">GLD (Gold Bullion)</option>
             <option value="VNQ">VNQ (US Real Estate)</option>
             <option value="BITO">BITO (Bitcoin Strategy)</option>
@@ -170,31 +185,79 @@ th.sorted-asc i, th.sorted-desc i { opacity: 1; color: #FCD535; }
     <div id="asset-list" class="flex flex-wrap gap-1.5 mt-3 max-h-[100px] overflow-y-auto custom-scrollbar pr-1"></div>
   </div>
 
-  <div class="opt-field-container">
-    <label class="opt-label">Benchmark Proxy</label>
-    <input id="cfg-bench" value="IVV" class="opt-input uppercase text-xs">
+  <!-- BENCHMARK WITH HELP -->
+  <div class="mb-5">
+    <label class="text-[10px] font-bold text-gray-400 uppercase flex items-center">
+        Comparison Benchmark
+        <div class="tooltip-container">
+            <span class="tooltip-icon">?</span>
+            <div class="tooltip-text">ดัชนีมาตรฐานที่ใช้เปรียบเทียบผลงาน เพื่อดูว่ากลยุทธ์ของเราทำได้ดีกว่าตลาดทั่วไปหรือไม่</div>
+        </div>
+    </label>
+    <input id="cfg-bench" value="IVV" class="opt-input uppercase text-xs mt-1 focus:border-brand-500">
   </div>
 
-  <!-- Improved Optimization Spacing -->
-  <div class="mb-6">
+  <!-- OPTIMIZATION WITH HELP -->
+  <div class="space-y-4 pt-2">
     <div class="grid grid-cols-2 gap-4">
-        <div class="opt-field-container">
-            <label class="opt-label">Lookback (D)</label>
-            <input id="cfg-lookback" value="60, 120, 252" class="opt-input">
+        <div>
+            <label class="text-[10px] font-bold text-gray-400 uppercase flex items-center">
+                Lookback (D)
+                <div class="tooltip-container">
+                    <span class="tooltip-icon">?</span>
+                    <div class="tooltip-text">จำนวนวันย้อนหลังที่ใช้คำนวณสัญญาณ ยิ่งน้อยยิ่งไวต่อราคาปัจจุบัน ยิ่งมากยิ่งเสถียร (ใส่หลายค่าได้โดยใช้จุลภาค)</div>
+                </div>
+            </label>
+            <input id="cfg-lookback" value="60, 120, 252" class="opt-input mt-1">
         </div>
-        <div class="opt-field-container">
-            <label class="opt-label">Rebalance (D)</label>
-            <input id="cfg-rebal" value="30, 90" class="opt-input">
+        <div>
+            <label class="text-[10px] font-bold text-gray-400 uppercase flex items-center">
+                Rebalance (D)
+                <div class="tooltip-container">
+                    <span class="tooltip-icon">?</span>
+                    <div class="tooltip-text">ความถี่ในการปรับพอร์ต (เช่น 30 วันปรับหนึ่งครั้ง) เพื่ออัปเดตน้ำหนักสินทรัพย์ให้ตรงตามกลยุทธ์</div>
+                </div>
+            </label>
+            <input id="cfg-rebal" value="30, 90" class="opt-input mt-1">
         </div>
     </div>
-    <div class="opt-field-container mt-2">
-        <label class="opt-label">Execution Fee (%)</label>
-        <input id="cfg-fee" value="0.10" type="number" step="0.01" class="opt-input text-red-500 font-bold">
+    
+    <div class="grid grid-cols-2 gap-4">
+        <div>
+            <label class="text-[10px] font-bold text-red-500 uppercase flex items-center">
+                Front-end Fee (%)
+                <div class="tooltip-container">
+                    <span class="tooltip-icon">?</span>
+                    <div class="tooltip-text">ค่าธรรมเนียมแรกเข้าที่หักออกจากเงินต้นก้อนแรกเพียงครั้งเดียวทันทีเมื่อเริ่มลงทุน</div>
+                </div>
+            </label>
+            <input id="cfg-frontend-fee" value="1.00" type="number" step="0.01" class="opt-input text-red-500 font-bold mt-1">
+        </div>
+        <div>
+            <label class="text-[10px] font-bold text-blue-500 uppercase flex items-center">
+                Mgmt Fee (% p.a.)
+                <div class="tooltip-container">
+                    <span class="tooltip-icon">?</span>
+                    <div class="tooltip-text">ค่าธรรมเนียมการจัดการรายปีที่หักออกจาก NAV อย่างต่อเนื่องทุกวัน (เฉลี่ยตามจำนวนวันถือครอง)</div>
+                </div>
+            </label>
+            <input id="cfg-mgmt-fee" value="1.50" type="number" step="0.01" class="opt-input text-blue-500 font-bold mt-1">
+        </div>
+    </div>
+    <div>
+        <label class="text-[10px] font-bold text-gray-400 uppercase flex items-center">
+            Trading Fee (%)
+            <div class="tooltip-container">
+                <span class="tooltip-icon">?</span>
+                <div class="tooltip-text">ค่าธรรมเนียมที่เกิดขึ้นทุกครั้งที่มีการซื้อขายหรือปรับเปลี่ยนสัดส่วนสินทรัพย์ (คิดตาม Turnover)</div>
+            </div>
+        </label>
+        <input id="cfg-fee" value="0.10" type="number" step="0.01" class="opt-input text-gray-400 mt-1">
     </div>
   </div>
 
-  <button onclick="Engine.runBatch()" class="w-full bg-brand-500 py-4 rounded-2xl font-bold text-black shadow-xl shadow-brand-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
-    🚀 RUN QUANT ENGINE
+  <button onclick="Engine.runBatch()" class="w-full bg-brand-500 py-4 mt-6 rounded-2xl font-bold text-black shadow-xl shadow-brand-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+    <i class="fas fa-play"></i> <span>START BATCH ENGINE</span>
   </button>
 </div>
 </aside>
@@ -205,10 +268,10 @@ th.sorted-asc i, th.sorted-desc i { opacity: 1; color: #FCD535; }
     <!-- PAGE: DASHBOARD -->
     <div id="view-dashboard" class="space-y-8 animate-fade-in">
         
-        <!-- KPIs Row -->
+        <!-- KPIs Comparison Cards -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
           <div class="glass p-6 rounded-3xl border-l-4 border-l-green-500 shadow-sm relative">
-            <div class="text-[10px] uppercase font-bold text-gray-400 tracking-widest">Return (CAGR)</div>
+            <div class="text-[10px] uppercase font-bold text-gray-400 tracking-widest">Net Return (CAGR)</div>
             <div id="kpi-cagr" class="text-3xl font-bold mt-1 mono text-dark-900 dark:text-white">-</div>
             <div id="bench-cagr" class="kpi-bench-val">Bench: -</div>
           </div>
@@ -229,22 +292,22 @@ th.sorted-asc i, th.sorted-desc i { opacity: 1; color: #FCD535; }
           </div>
         </div>
 
-        <!-- Aligned Equity & Drawdown Charts -->
+        <!-- Charts Display -->
         <div class="glass p-8 rounded-[2.5rem] shadow-xl space-y-6">
             <div class="flex justify-between items-center px-2">
-                <h3 class="text-xs font-bold uppercase text-gray-500 tracking-widest font-sans">Portfolio Growth & Risk Waterfall</h3>
-                <button onclick="UI.toggleLog()" class="text-[9px] font-bold bg-gray-100 dark:bg-dark-800 px-4 py-2 rounded-xl border dark:border-dark-700 mono">LOG SCALE</button>
+                <h3 class="text-xs font-bold uppercase text-gray-500 tracking-widest font-sans">Net Growth & Drawdown Waterfall</h3>
+                <button onclick="UI.toggleLog()" class="text-[9px] font-bold bg-gray-100 dark:bg-dark-800 px-4 py-2 rounded-xl border dark:border-dark-700 mono">TOGGLE LOG</button>
             </div>
             <div class="h-[380px]"><canvas id="chart-equity"></canvas></div>
             <div class="h-[140px] border-t dark:border-dark-700 pt-6"><canvas id="chart-drawdown"></canvas></div>
         </div>
 
-        <!-- Optimization Surface & Prediction -->
+        <!-- Optimization Row (3D Surface + Monte Carlo) -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div class="glass p-8 rounded-[2.5rem] shadow-xl h-[550px] flex flex-col">
                 <h3 class="font-bold text-sm mb-6 border-b dark:border-dark-700 pb-4 flex justify-between items-center">
                     <span>Hyper-Parameter Sharpe Surface</span>
-                    <span class="text-[9px] bg-brand-500/10 text-brand-600 px-2 py-0.5 rounded font-mono uppercase tracking-tighter">Dynamic Mapping</span>
+                    <span class="text-[9px] bg-brand-500/10 text-brand-600 px-2 py-0.5 rounded font-mono uppercase tracking-tighter">Stability Map</span>
                 </h3>
                 <div id="viz-surface" class="flex-1"></div>
             </div>
@@ -252,32 +315,31 @@ th.sorted-asc i, th.sorted-desc i { opacity: 1; color: #FCD535; }
             <div class="glass p-8 rounded-[2.5rem] shadow-xl h-[550px] flex flex-col">
                 <h3 class="font-bold text-sm mb-6 border-b dark:border-dark-700 pb-4 flex justify-between items-center">
                     <span>🎲 Monte Carlo Forecast (1Y)</span>
-                    <button onclick="UI.runMonteCarlo()" class="text-[9px] bg-brand-500 text-black px-4 py-1.5 rounded-xl font-bold uppercase tracking-wider hover:scale-105 transition-all shadow-md">RE-SIMULATE</button>
+                    <button onclick="UI.runMonteCarlo()" class="text-[9px] bg-brand-500 text-black px-4 py-1.5 rounded-xl font-bold uppercase tracking-wider hover:scale-105 transition-all shadow-md">Re-Simulate</button>
                 </h3>
                 <div id="viz-monte-dashboard" class="flex-1"></div>
             </div>
         </div>
 
-        <!-- Asset Breakdown Section -->
+        <!-- Combined Analysis Row (Correlation + Asset Stats) -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div class="glass p-8 rounded-[2.5rem] shadow-xl h-[500px]">
-                <h3 class="font-bold text-sm mb-6 border-b dark:border-dark-700 pb-4">Asset Correlation Matrix (T-90)</h3>
+                <h3 class="font-bold text-sm mb-6 border-b dark:border-dark-700 pb-4 font-sans">Correlation Matrix (T-90)</h3>
                 <div id="viz-correlation" class="h-[380px]"></div>
             </div>
             
             <div class="glass p-8 rounded-[2.5rem] shadow-xl h-[500px] flex flex-col">
                 <h3 class="font-bold text-sm mb-6 border-b dark:border-dark-700 pb-4 flex justify-between items-center">
-                    <span>Individual Asset Analytics</span>
-                    <span class="text-[9px] text-gray-400 font-normal">Universe Snapshot</span>
+                    <span>Individual Asset Metrics</span>
                 </h3>
                 <div class="flex-1 overflow-auto custom-scrollbar">
                     <table class="w-full text-[11px] mono">
                         <thead class="bg-gray-50 dark:bg-dark-800 text-gray-400 sticky top-0">
                             <tr class="text-right">
-                                <th class="text-left p-3">Asset</th>
-                                <th class="p-3">Volatility (Ann)</th>
-                                <th class="p-3 text-red-500">Max DD</th>
-                                <th class="p-3 text-green-500">Absolute Ret</th>
+                                <th class="text-left p-3 border-b dark:border-dark-700">Ticker</th>
+                                <th class="p-3 border-b dark:border-dark-700">Volatility</th>
+                                <th class="p-3 border-b dark:border-dark-700 text-red-500">Max DD</th>
+                                <th class="p-3 border-b dark:border-dark-700 text-green-500">Absolute Ret</th>
                             </tr>
                         </thead>
                         <tbody id="asset-risk-table" class="divide-y dark:divide-dark-700 text-right"></tbody>
@@ -286,12 +348,12 @@ th.sorted-asc i, th.sorted-desc i { opacity: 1; color: #FCD535; }
             </div>
         </div>
 
-        <!-- Full-Width Strategy Matrix Explorer -->
+        <!-- Full-Width Batch Matrix Explorer -->
         <div class="glass rounded-[2.5rem] overflow-hidden shadow-2xl border flex flex-col min-h-[600px]">
             <div class="px-8 py-6 border-b dark:border-dark-700 bg-gray-50/50 dark:bg-dark-800/50 flex justify-between items-center">
                 <div>
                     <h3 class="text-sm font-black uppercase text-gray-600 dark:text-gray-300 tracking-widest font-sans">Batch Strategy Optimization Matrix</h3>
-                    <p class="text-[10px] text-gray-400 font-sans mt-1">เปรียบเทียบทุกความถี่และกลยุทธ์ (Sort และ Filter ได้อย่างอิสระ)</p>
+                    <p class="text-[10px] text-gray-400 font-sans mt-1 italic">*เลือกแถวเพื่อแสดงผลรายละเอียดเชิงลึก</p>
                 </div>
                 <button onclick="UI.clearFilters()" class="text-[10px] bg-white dark:bg-dark-700 px-4 py-2 rounded-xl border dark:border-dark-900 font-bold text-gray-400 hover:text-brand-500 transition-all">RESET FILTERS</button>
             </div>
@@ -300,26 +362,24 @@ th.sorted-asc i, th.sorted-desc i { opacity: 1; color: #FCD535; }
                 <thead class="bg-gray-100 dark:bg-dark-900 text-gray-400 text-right sticky top-0 z-10 border-b">
                   <tr>
                     <th class="text-left p-4 sortable" onclick="UI.sortBatch('stratFull')">Strategy Model <i class="fas fa-sort"></i></th>
-                    <th class="p-4 sortable" onclick="UI.sortBatch('lb')">Lookback (Days) <i class="fas fa-sort"></i></th>
-                    <th class="p-4 sortable" onclick="UI.sortBatch('rb')">Rebalance (Days) <i class="fas fa-sort"></i></th>
-                    <th class="p-4 sortable" onclick="UI.sortBatch('cagr')">Return (CAGR) <i class="fas fa-sort"></i></th>
-                    <th class="p-4 sortable" onclick="UI.sortBatch('sharpe')">Sharpe Ratio <i class="fas fa-sort"></i></th>
-                    <th class="p-4 sortable" onclick="UI.sortBatch('mdd')">Max Drawdown <i class="fas fa-sort"></i></th>
+                    <th class="p-4 sortable" onclick="UI.sortBatch('lb')">Lookback <i class="fas fa-sort"></i></th>
+                    <th class="p-4 sortable" onclick="UI.sortBatch('rb')">Rebalance <i class="fas fa-sort"></i></th>
+                    <th class="p-4 sortable" onclick="UI.sortBatch('cagr')">Net CAGR <i class="fas fa-sort"></i></th>
+                    <th class="p-4 sortable" onclick="UI.sortBatch('sharpe')">Sharpe <i class="fas fa-sort"></i></th>
+                    <th class="p-4 sortable" onclick="UI.sortBatch('mdd')">MaxDD <i class="fas fa-sort"></i></th>
                     <th class="p-4 sortable" onclick="UI.sortBatch('avgTO')">Turnover % <i class="fas fa-sort"></i></th>
                   </tr>
                   <tr class="bg-gray-50 dark:bg-dark-800">
-                    <th class="p-2 text-left"><input type="text" id="f-strat" placeholder="Filter Logic..." class="filter-input" oninput="UI.applyBatchFilters()"></th>
-                    <th class="p-2"><input type="number" id="f-lb" placeholder="Min" class="filter-input" oninput="UI.applyBatchFilters()"></th>
-                    <th class="p-2"><input type="number" id="f-rb" placeholder="Min" class="filter-input" oninput="UI.applyBatchFilters()"></th>
-                    <th class="p-2"><input type="number" id="f-cagr" placeholder="Min %" class="filter-input" oninput="UI.applyBatchFilters()"></th>
-                    <th class="p-2"><input type="number" id="f-sharpe" placeholder="Min Ratio" class="filter-input" oninput="UI.applyBatchFilters()"></th>
-                    <th class="p-2"><input type="number" id="f-mdd" placeholder="Max %" class="filter-input" oninput="UI.applyBatchFilters()"></th>
-                    <th class="p-2"><input type="number" id="f-to" placeholder="Max %" class="filter-input" oninput="UI.applyBatchFilters()"></th>
+                    <th class="p-2 text-left"><input type="text" id="f-strat" placeholder="Filter..." class="filter-input" oninput="UI.applyBatchFilters()"></th>
+                    <th class="p-2"><input type="number" id="f-lb" class="filter-input" oninput="UI.applyBatchFilters()"></th>
+                    <th class="p-2"><input type="number" id="f-rb" class="filter-input" oninput="UI.applyBatchFilters()"></th>
+                    <th class="p-2"><input type="number" id="f-cagr" class="filter-input" oninput="UI.applyBatchFilters()"></th>
+                    <th class="p-2"><input type="number" id="f-sharpe" class="filter-input" oninput="UI.applyBatchFilters()"></th>
+                    <th class="p-2"><input type="number" id="f-mdd" class="filter-input" oninput="UI.applyBatchFilters()"></th>
+                    <th class="p-2"><input type="number" id="f-to" class="filter-input" oninput="UI.applyBatchFilters()"></th>
                   </tr>
                 </thead>
-                <tbody id="batch-table-body" class="divide-y dark:divide-dark-700 text-right">
-                    <tr><td colspan="7" class="py-32 text-center text-gray-400 italic">No backtest run yet. Select assets and press Start Analytics.</td></tr>
-                </tbody>
+                <tbody id="batch-table-body" class="divide-y dark:divide-dark-700 text-right"></tbody>
               </table>
             </div>
         </div>
@@ -327,13 +387,13 @@ th.sorted-asc i, th.sorted-desc i { opacity: 1; color: #FCD535; }
         <!-- Heatmaps Section -->
         <div class="glass rounded-[2.5rem] overflow-hidden shadow-xl p-8 space-y-12 border">
             <div><h3 class="text-xs font-bold uppercase text-green-600 mb-6 tracking-widest font-sans border-b pb-2">Monthly Returns Heatmap (%)</h3><div id="heatmap-return-container" class="overflow-x-auto custom-scrollbar"></div></div>
-            <div><h3 class="text-xs font-bold uppercase text-red-500 mb-6 tracking-widest font-sans border-b pb-2">Monthly Drawdown Intensity Heatmap (%)</h3><div id="heatmap-drawdown-container" class="overflow-x-auto custom-scrollbar"></div></div>
+            <div><h3 class="text-xs font-bold uppercase text-red-500 mb-6 tracking-widest font-sans border-b pb-2">Monthly Max Drawdown Intensity (%)</h3><div id="heatmap-drawdown-container" class="overflow-x-auto custom-scrollbar"></div></div>
         </div>
 
-        <!-- Detailed Rebalance Logs -->
+        <!-- Detailed Logs -->
         <div class="glass rounded-[2.5rem] overflow-hidden shadow-xl border">
             <div class="px-8 py-5 border-b dark:border-dark-700 bg-gray-50/30">
-                <h3 class="text-xs font-bold uppercase text-gray-500 tracking-widest font-sans">Full Rebalance History & Portfolio Composition</h3>
+                <h3 class="text-xs font-bold uppercase text-gray-500 tracking-widest font-sans">Full Rebalance Logs & Dynamic Allocation Matrix</h3>
             </div>
             <div class="overflow-x-auto max-h-[600px] custom-scrollbar">
                 <table class="w-full text-[11px] mono">
@@ -341,7 +401,7 @@ th.sorted-asc i, th.sorted-desc i { opacity: 1; color: #FCD535; }
                         <tr class="text-left">
                             <th class="p-5 w-32">Date</th>
                             <th class="p-5 w-24">TO %</th>
-                            <th class="p-5">Strategic Composition Detail (%)</th>
+                            <th class="p-5">Allocations Analysis (%)</th>
                         </tr>
                     </thead>
                     <tbody id="log-table" class="divide-y dark:divide-dark-700"></tbody>
@@ -354,74 +414,88 @@ th.sorted-asc i, th.sorted-desc i { opacity: 1; color: #FCD535; }
     <div id="view-workflow" class="hidden space-y-12 animate-fade-in pb-20 font-sans">
         <div class="glass p-12 rounded-[4rem] shadow-2xl border border-brand-500/20 max-w-6xl mx-auto">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mb-4 tracking-tight">Strategy Logic & Flow</h2>
-                <p class="text-gray-500 text-lg">เบื้องหลังคณิตศาสตร์และการประมวลผลกลยุทธ์เชิงปริมาณ</p>
+                <h2 class="text-4xl font-bold mb-4 tracking-tight">Strategy Architecture & Logic</h2>
+                <p class="text-gray-500 text-lg italic">เบื้องหลังการคำนวณที่เปลี่ยนราคาตลาดให้เป็นน้ำหนักการจัดพอร์ต</p>
             </div>
 
             <div class="space-y-16">
-                <!-- Numerical Scenario -->
+                <!-- Fee Logic -->
                 <div class="step-card">
-                    <h4 class="text-2xl font-bold text-purple-600 mb-8">Detailed Weighting Logic & Numerical Walkthrough</h4>
-                    
-                    <div class="p-8 bg-brand-500/5 rounded-[2.5rem] border border-brand-500/20 mb-12">
-                        <h5 class="font-bold text-xl mb-4">Sample Assets Assessment Case (A, B, C, D)</h5>
-                        <p class="text-[12px] text-gray-500 mb-8 italic">สมมติพิกัดสัญญาณของ 4 สินทรัพย์ ณ วันที่ทำการ Rebalance ได้ค่าดังนี้:</p>
-                        
-                        <div class="overflow-x-auto mb-10 border rounded-2xl bg-white dark:bg-dark-900/50 shadow-sm">
+                    <h4 class="text-2xl font-bold text-red-500 mb-4">Institutional Multi-Fee Engine</h4>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                        <div class="space-y-6">
+                            <div class="formula-box p-6 border-red-500/30">
+                                <div class="text-[10px] font-bold text-red-500 uppercase">1. Front-end Fee (แรกเข้า)</div>
+                                <div class="mono text-lg font-bold text-center py-2 underline decoration-red-500/30 decoration-double">
+                                    C<sub>start</sub> = C<sub>initial</sub> × (1 - Fee<sub>front</sub>)
+                                </div>
+                                <p class="text-[11px] text-gray-400 mt-2 font-sans italic">หักเพียงครั้งเดียวทันทีตั้งแต่วันแรกที่เริ่มลงทุน ($T=0$)</p>
+                            </div>
+                            <div class="formula-box p-6 border-blue-500/30">
+                                <div class="text-[10px] font-bold text-blue-500 uppercase">2. Management Fee (การจัดการ)</div>
+                                <div class="mono text-lg font-bold text-center py-2 underline decoration-blue-500/30">
+                                    NAV<sub>daily</sub> = NAV<sub>prev</sub> × (1 - (Fee<sub>mgmt</sub> / 365))
+                                </div>
+                                <p class="text-[11px] text-gray-400 mt-2 font-sans italic">หักรายวันต่อเนื่องระหว่างถือครองพอร์ต (NAV Net Expenses)</p>
+                            </div>
+                            <div class="formula-box p-6">
+                                <div class="text-[10px] font-bold text-gray-500 uppercase font-sans">3. Trading Fee (การซื้อขาย)</div>
+                                <div class="mono text-lg font-bold text-center py-2">
+                                    Cost = Turnover × Fee<sub>trade</sub>
+                                </div>
+                                <p class="text-[11px] text-gray-400 mt-2 font-sans italic">หักเฉพาะรอบที่มีการปรับเปลี่ยนสินทรัพย์จริง (Rebalance)</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col justify-center">
+                            <h5 class="font-black text-sm mb-4 font-sans uppercase tracking-tighter">Numerical Cost Walkthrough:</h5>
+                            <div class="mono text-xs space-y-4 bg-white/50 dark:bg-black/20 p-8 rounded-[2rem] border dark:border-dark-700 shadow-inner">
+                                <div class="text-dark-900 dark:text-white font-bold border-b pb-1">Fund Setup:</div>
+                                <div>- เงินต้น: $1,000</div>
+                                <div>- Front-end Load (1.5%): <span class="text-red-500">-$15.00</span></div>
+                                <div class="text-brand-600 font-bold">-> Net Capital (T=0): $985.00</div>
+                                <div class="pt-4 border-t dark:border-gray-800">
+                                    - ถือพอร์ต 1 ปี (Mgmt Fee 1.5%):<br>
+                                    - เฉลี่ยหักวันละ ~0.0041%<br>
+                                    - <span class="text-blue-500">Total Yearly Exp: -$14.78</span>
+                                </div>
+                                <div class="pt-4 border-t dark:border-gray-800">
+                                    - ปรับพอร์ต (Turnover 50%):<br>
+                                    - Trading Fee (0.10%):<br>
+                                    - Transaction Cost = <span class="text-orange-500">-$0.49</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8 Strat Scenarios -->
+                <div class="step-card">
+                    <h4 class="text-2xl font-bold text-purple-600 mb-8">Strategic Scenarios: Asset Allocation Breakdown</h4>
+                    <div class="p-10 bg-brand-500/5 rounded-[3rem] border border-brand-500/20 mb-12">
+                        <h5 class="font-bold text-xl mb-4">Sample Data Grid (A, B, C, D)</h5>
+                        <div class="overflow-x-auto mb-10 border rounded-2xl bg-white dark:bg-dark-900 shadow-sm">
                             <table class="w-full text-[12px] mono text-left border-collapse">
-                                <thead class="bg-gray-50 dark:bg-dark-800 text-gray-400 border-b">
-                                    <tr><th class="p-4">Asset</th><th class="p-4 text-center">Momentum ROC (60D)</th><th class="p-4 text-center">Volatility σ (Ann.)</th><th class="p-4 text-center">Relative Rank</th></tr>
+                                <thead class="bg-gray-50 dark:bg-dark-800 text-gray-500 border-b">
+                                    <tr><th class="p-4">Asset Ticker</th><th class="p-4 text-center">Momentum Score</th><th class="p-4 text-center">Volatility σ</th><th class="p-4 text-center">Relative Rank</th></tr>
                                 </thead>
                                 <tbody class="divide-y dark:divide-gray-800">
-                                    <tr><td class="p-4 font-bold text-dark-900 dark:text-white">A (VOO)</td><td class="p-4 text-center text-green-500">+12%</td><td class="p-4 text-center">15.0%</td><td class="p-4 text-center font-bold">#2</td></tr>
-                                    <tr><td class="p-4 font-bold text-dark-900 dark:text-white">B (QQQ)</td><td class="p-4 text-center text-green-500">+25%</td><td class="p-4 text-center">25.0%</td><td class="p-4 text-center font-bold">#1</td></tr>
-                                    <tr><td class="p-4 font-bold text-dark-900 dark:text-white">C (BND)</td><td class="p-4 text-center text-red-400">-2%</td><td class="p-4 text-center font-bold">4.0%</td><td class="p-4 text-center font-bold">#4</td></tr>
-                                    <tr><td class="p-4 font-bold text-dark-900 dark:text-white">D (GLD)</td><td class="p-4 text-center text-green-500">+8%</td><td class="p-4 text-center">12.0%</td><td class="p-4 text-center font-bold">#3</td></tr>
+                                    <tr><td class="p-4 font-bold">Asset A (VOO)</td><td class="p-4 text-center text-green-500">+12%</td><td class="p-4 text-center">15.0%</td><td class="p-4 text-center font-bold">#2</td></tr>
+                                    <tr><td class="p-4 font-bold">Asset B (QQQ)</td><td class="p-4 text-center text-green-500">+25%</td><td class="p-4 text-center">25.0%</td><td class="p-4 text-center font-bold">#1</td></tr>
+                                    <tr><td class="p-4 font-bold">Asset C (BND)</td><td class="p-4 text-center text-red-400">-2%</td><td class="p-4 text-center font-bold">4.0%</td><td class="p-4 text-center font-bold">#4</td></tr>
+                                    <tr><td class="p-4 font-bold">Asset D (GLD)</td><td class="p-4 text-center text-green-500">+8%</td><td class="p-4 text-center">12.0%</td><td class="p-4 text-center font-bold">#3</td></tr>
                                 </tbody>
                             </table>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div class="strat-card-info">
-                                <h6 class="font-bold text-purple-600 mb-2">1. Equal Weight (1/N)</h6>
-                                <p class="text-[11px] text-gray-400 mb-2 font-sans italic">สูตร: $W_i = 1/N$ (หารเท่ากันทุกตัว)</p>
-                                <div class="mono text-[11px] bg-white/40 dark:bg-black/20 p-2 rounded">Output Alloc: <b>A:25, B:25, C:25, D:25</b></div>
-                            </div>
-                            <div class="strat-card-info">
-                                <h6 class="font-bold text-purple-600 mb-2">2. Rank All</h6>
-                                <p class="text-[11px] text-gray-400 mb-2 font-sans italic">ให้น้ำหนักลดหลั่นตามลำดับ Momentum Rank</p>
-                                <div class="mono text-[11px] bg-white/40 dark:bg-black/20 p-2 rounded">Output Alloc: <b>B:40%, A:30%, D:20%, C:10%</b></div>
-                            </div>
-                            <div class="strat-card-info">
-                                <h6 class="font-bold text-purple-600 mb-2">3. Top 3 Equal</h6>
-                                <p class="text-[11px] text-gray-400 mb-2 font-sans italic">เลือก Best 3 แล้วหารคนละ 33.3%</p>
-                                <div class="mono text-[11px] bg-white/40 dark:bg-black/20 p-2 rounded text-blue-600 font-bold">Output Alloc: B:33.3, A:33.3, D:33.3 (C:0)</div>
-                            </div>
-                            <div class="strat-card-info">
-                                <h6 class="font-bold text-purple-600 mb-2">4. Top 3 Rank Weighted</h6>
-                                <p class="text-[11px] text-gray-400 mb-2 font-sans italic">เลือก Best 3 และให้ตาม Rank (50/33/17)</p>
-                                <div class="mono text-[11px] bg-white/40 dark:bg-black/20 p-2 rounded">Output Alloc: <b>B:50, A:33, D:17</b></div>
-                            </div>
-                            <div class="strat-card-info">
-                                <h6 class="font-bold text-purple-600 mb-2">5. Top 50% Filter</h6>
-                                <p class="text-[11px] text-gray-400 mb-2 font-sans italic">ลงทุนเฉพาะครึ่งบนที่เก่งที่สุด ($N/2$)</p>
-                                <div class="mono text-[11px] bg-white/40 dark:bg-black/20 p-2 rounded">Output Alloc: <b>B:50, A:50</b> (ที่เหลือ 0%)</div>
-                            </div>
-                            <div class="strat-card-info">
-                                <h6 class="font-bold text-purple-600 mb-2">6. Absolute Momentum</h6>
-                                <p class="text-[11px] text-gray-400 mb-2 font-sans italic">เลือกเฉพาะตัวที่มี Momentum เป็นบวก</p>
-                                <div class="mono text-[11px] bg-white/40 dark:bg-black/20 p-2 rounded">Output Alloc: <b>B:33.3, A:33.3, D:33.3</b> (C as Cash)</div>
-                            </div>
-                            <div class="strat-card-info">
-                                <h6 class="font-bold text-purple-600 mb-2">7. Dual Momentum</h6>
-                                <p class="text-[11px] text-gray-400 mb-2 font-sans italic">เงื่อนไข: Top 3 และ ROC ต้องมากกว่า 0</p>
-                                <div class="mono text-[11px] bg-white/40 dark:bg-black/20 p-2 rounded text-green-600 font-bold">Output Alloc: B, A, D ลงทุนเท่ากันคนละ 33.3%</div>
-                            </div>
-                            <div class="strat-card-info">
-                                <h6 class="font-bold text-purple-600 mb-2">8. Inverse Volatility (Risk Parity)</h6>
-                                <p class="text-[11px] text-gray-400 mb-2 font-sans italic">สูตร: $W_i = (1/\sigma_i) / \sum(1/\sigma_j)$</p>
-                                <div class="mono text-[11px] bg-white/40 dark:bg-black/20 p-2 rounded text-red-500 font-bold">Output Alloc: C(~54%), D(~18%), A(~15%), B(~13%)</div>
-                            </div>
+                            <div class="strat-card-info"><h6 class="font-bold text-purple-600 mb-2">1. Equal Weight (1/N)</h6><p class="text-[11px] text-gray-400">Alloc A:25, B:25, C:25, D:25</p></div>
+                            <div class="strat-card-info"><h6 class="font-bold text-purple-600 mb-2">2. Rank All</h6><p class="text-[11px] text-gray-400">Alloc B:40, A:30, D:20, C:10 (Linear Scale)</p></div>
+                            <div class="strat-card-info"><h6 class="font-bold text-purple-600 mb-2">3. Top 3 Equal</h6><p class="text-[11px] text-gray-400">Select B, A, D | Weight: 33.3% each</p></div>
+                            <div class="strat-card-info"><h6 class="font-bold text-purple-600 mb-2">4. Top 3 Rank Weighted</h6><p class="text-[11px] text-gray-400">Rank Weighting (50/33/17): B:50, A:33, D:17</p></div>
+                            <div class="strat-card-info"><h6 class="font-bold text-purple-600 mb-2">5. Top 50% Filter</h6><p class="text-[11px] text-gray-400">Top Half (B, A): 50% Each</p></div>
+                            <div class="strat-card-info"><h6 class="font-bold text-purple-600 mb-2">6. Abs Momentum</h6><p class="text-[11px] text-gray-400">Positive Mom: B, A, D (33.3% each)</p></div>
+                            <div class="strat-card-info"><h6 class="font-bold text-purple-600 mb-2">7. Dual Momentum</h6><p class="text-[11px] text-gray-400">Top 3 + Positive ROC: B, A, D (Equal)</p></div>
+                            <div class="strat-card-info"><h6 class="font-bold text-purple-600 mb-2">8. Inverse Volatility</h6><p class="text-[11px] text-gray-400">W = 1/σ: C gets ~54% (Lowest Vol)</p></div>
                         </div>
                     </div>
                 </div>
@@ -435,7 +509,7 @@ th.sorted-asc i, th.sorted-desc i { opacity: 1; color: #FCD535; }
 <!-- ================= LOADER ================= -->
 <div id="loader" class="fixed inset-0 bg-white/95 dark:bg-dark-900/95 z-[100] hidden flex flex-col items-center justify-center backdrop-blur-md">
     <div class="w-16 h-16 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
-    <p class="mt-6 font-bold mono text-sm tracking-[0.3em] animate-pulse uppercase" id="loader-text">Engine processing...</p>
+    <p class="mt-6 font-bold mono text-sm tracking-[0.3em] animate-pulse uppercase" id="loader-text">Quant engine calculating...</p>
 </div>
 
 <script>
@@ -476,10 +550,12 @@ class QuantEngine {
         BND:  { mu: 0.00005, sigma: 0.003 }, TLT:  { mu: 0.00010, sigma: 0.009 },
         GLD:  { mu: 0.00022, sigma: 0.008 }, VNQ:  { mu: 0.00015, sigma: 0.012 },
         IVV:  { mu: 0.00045, sigma: 0.010 }, SCHD: { mu: 0.00040, sigma: 0.009 },
-        XLK:  { mu: 0.00065, sigma: 0.015 }, IBB:  { mu: 0.00028, sigma: 0.014 }
+        BITO: { mu: 0.00110, sigma: 0.035 }, XLK:  { mu: 0.00065, sigma: 0.015 },
+        AGG:  { mu: 0.00006, sigma: 0.004 }, VYM:  { mu: 0.00032, sigma: 0.010 },
+        TIP:  { mu: 0.00008, sigma: 0.005 }, SLV:  { mu: 0.00025, sigma: 0.018 }
     };
     const char = chars[symbol] || { mu: 0.0003, sigma: 0.012 };
-    const days = 3200; 
+    const days = 3000; 
     const history = []; let price = 100;
     const start = new Date(); start.setDate(start.getDate() - days);
     for(let i=0; i<days; i++){
@@ -493,7 +569,7 @@ class QuantEngine {
   }
 
   async runBatch(){
-    UI.loading(true, "VIRTUALIZING MARKETS...");
+    UI.loading(true, "VIRTUALIZING QUANT CORE...");
     const cfg = UI.getParams();
     const allTickers = [...new Set([...this.universe, cfg.bench])];
     const raw = await Promise.all(allTickers.map(s => this.fetchAssetData(s)));
@@ -512,7 +588,7 @@ class QuantEngine {
     const endIdx = this.dates.findIndex(d => d > cfg.end);
     const sliceEnd = (endIdx === -1) ? this.dates.length : endIdx;
     
-    if(userStartIdx === -1 || sliceEnd <= userStartIdx) { alert("Selected dates unavailable."); UI.loading(false); return; }
+    if(userStartIdx === -1 || sliceEnd <= userStartIdx) { alert("Selected range unavailable."); UI.loading(false); return; }
 
     const strats = cfg.strategy === "ALL" ? Object.keys(STRAT_NAMES) : [cfg.strategy];
     const returns = {}; this.universe.forEach(s => { 
@@ -520,7 +596,7 @@ class QuantEngine {
         for(let i=1; i<p.length; i++) returns[s].push(p[i]/p[i-1]-1); 
     });
 
-    // Asset Stats
+    // Asset Stats Table
     const assetRiskBody = document.getElementById('asset-risk-table');
     assetRiskBody.innerHTML = '';
     this.universe.forEach(s => {
@@ -532,16 +608,25 @@ class QuantEngine {
         assetRiskBody.innerHTML += `<tr><td class="p-3 text-left font-bold text-brand-600">${s}</td><td class="p-3">${vol.toFixed(1)}%</td><td class="p-3 text-red-500">${(mdd*100).toFixed(1)}%</td><td class="p-3 text-green-500">${totRet.toFixed(1)}%</td></tr>`;
     });
 
-    // Simulation Loop
+    // Multi-Layer Fee Logic
+    const dailyMgmtFee = (cfg.mgmtFee / 100) / 365;
+
     this.results = [];
     for(const stratKey of strats){
       for(const lb of cfg.lookbacks){
         for(const rb of cfg.rebals){
-          let eq = 1000, curve = [], w = {}, logs = [], totalTO = 0, rebCount = 0;
+          // Front-end Load
+          let eq = 1000 * (1 - cfg.frontEndFee / 100);
+          let curve = [], w = {}, logs = [], totalTO = 0, rebCount = 0;
           this.universe.forEach(k => w[k] = 0);
+          
           for(let t = userStartIdx; t < sliceEnd; t++){
             let dRet = 0; this.universe.forEach(k => dRet += (w[k] || 0) * (returns[k][t] || 0));
             eq *= (1 + dRet);
+            
+            // Accrue Daily Management Fee
+            eq *= (1 - dailyMgmtFee);
+
             if((t - userStartIdx) % rb === 0){
                 const sigs = {}, vols = {};
                 this.universe.forEach(k => {
@@ -550,8 +635,11 @@ class QuantEngine {
                 });
                 const nw = this.getWeights(stratKey, sigs, vols);
                 let to = 0; this.universe.forEach(k => to += Math.abs((nw[k] || 0) - (w[k] || 0)));
+                
+                // Transactional Fee
                 eq *= (1 - (to * cfg.fee/100));
-                totalTO += to; rebCount++; logs.push({ date: this.dates[t], to, alloc: {...nw} });
+                
+                if(to > 0.001) { totalTO += to; rebCount++; logs.push({ date: this.dates[t], to, alloc: {...nw} }); }
                 w = nw;
             }
             curve.push(eq);
@@ -618,19 +706,22 @@ const UI = {
     },
 
     getParams(){
-        const p = {}; ['cfg-strategy', 'cfg-start', 'cfg-end', 'cfg-bench', 'cfg-lookback', 'cfg-rebal', 'cfg-fee'].forEach(id => { const el = document.getElementById(id); p[id.replace('cfg-','')] = el ? el.value : null; });
+        const p = {}; ['cfg-strategy', 'cfg-start', 'cfg-end', 'cfg-bench', 'cfg-lookback', 'cfg-rebal', 'cfg-fee', 'cfg-frontend-fee', 'cfg-mgmt-fee'].forEach(id => { const el = document.getElementById(id); p[id.replace('cfg-','')] = el ? el.value : null; });
         return {
             ...p, bench: (p.bench || "IVV").toUpperCase().trim(),
             lookbacks: p.lookback ? p.lookback.split(',').map(v => parseInt(v.trim())) : [60],
             rebals: p.rebal ? p.rebal.split(',').map(v => parseInt(v.trim())) : [30],
-            fee: parseFloat(p.fee || 0.1), leverage: 1
+            fee: parseFloat(p.fee || 0.1), 
+            frontEndFee: parseFloat(p['frontend-fee'] || 0),
+            mgmtFee: parseFloat(p['mgmt-fee'] || 0),
+            leverage: 1
         };
     },
 
     switchTab(id){
         ['dashboard', 'workflow'].forEach(v => {
-            const view = document.getElementById(`view-${v}`); const btn = document.getElementById(`btn-tab-${v}`);
-            if(view) view.classList.add('hidden'); if(btn) btn.className = "px-5 py-1.5 text-xs font-bold rounded-md text-gray-400 hover:text-brand-500 transition-all";
+            const elV = document.getElementById(`view-${v}`); const elB = document.getElementById(`btn-tab-${v}`);
+            if(elV) elV.classList.add('hidden'); if(elB) elB.className = "px-5 py-1.5 text-xs font-bold rounded-md text-gray-400 hover:text-brand-500 transition-all";
         });
         const tv = document.getElementById(`view-${id}`); const tb = document.getElementById(`btn-tab-${id}`);
         if(tv) tv.classList.remove('hidden'); if(tb) tb.className = "px-5 py-1.5 text-xs font-bold rounded-md bg-white dark:bg-dark-900 shadow-sm text-brand-600 transition-all";
@@ -677,13 +768,20 @@ const UI = {
             return v1 < v2 ? 1 : -1;
         });
 
-        if(!data.length){ b.innerHTML = '<tr><td colspan="7" class="py-20 text-center text-gray-400 italic">No matches.</td></tr>'; return; }
+        const ths = document.querySelectorAll('#batch-matrix-table th.sortable');
+        ths.forEach(th => {
+            th.classList.remove('sorted-asc', 'sorted-desc');
+            const colMatch = th.getAttribute('onclick').match(/'([^']+)'/);
+            if(colMatch && colMatch[1] === this.sortCol) th.classList.add(this.sortDir === 'asc' ? 'sorted-asc' : 'sorted-desc');
+        });
+
+        if(!data.length){ b.innerHTML = '<tr><td colspan="7" class="py-20 text-center text-gray-400 italic font-sans">No matches found.</td></tr>'; return; }
         b.innerHTML = data.map((r, i) => {
             const origIdx = Engine.results.findIndex(orig => orig === r);
             return `<tr onclick="UI.selectResult(${origIdx})" class="cursor-pointer hover:bg-brand-500/10 transition-colors ${origIdx===this.selectedIdx?'bg-brand-500/15 font-bold':''}">
-                <td class="text-left p-3 font-bold text-dark-900 dark:text-white">${r.stratFull}</td><td class="p-3">${r.lb}</td><td class="p-3">${r.rb}</td>
-                <td class="p-3 text-green-500">${r.cagr}%</td><td class="p-3 text-brand-600 font-bold">${r.sharpe}</td>
-                <td class="p-3 text-red-500">${r.mdd}%</td><td class="p-3 text-blue-500">${r.avgTO}%</td></tr>`;
+                <td class="text-left p-4 font-bold text-dark-900 dark:text-white">${r.stratFull}</td><td class="p-4">${r.lb}</td><td class="p-4">${r.rb}</td>
+                <td class="p-4 text-green-500">${r.cagr}%</td><td class="p-4 text-brand-600 font-bold">${r.sharpe}</td>
+                <td class="p-4 text-red-500">${r.mdd}%</td><td class="p-4 text-blue-500">${r.avgTO}%</td></tr>`;
         }).join('');
     },
 
@@ -710,7 +808,7 @@ const UI = {
         const ctx = document.getElementById('chart-equity').getContext('2d'); if(this.chartEq) this.chartEq.destroy();
         const cfg = UI.getParams(); const bAll = Engine.allPrices[cfg.bench]; const sIdx = Engine.dates.findIndex(d => d === res.dates[0]);
         const bench = bAll.slice(sIdx, sIdx + res.curve.length).map(v => (v/bAll[sIdx])*1000);
-        this.chartEq = new Chart(ctx, { type: 'line', data: { labels: res.dates, datasets: [{ label: 'Quant Strategy', data: res.curve, borderColor: '#FCD535', backgroundColor: 'rgba(252,213,53,0.1)', borderWidth: 3.5, fill: true, pointRadius: 0 }, { label: 'Benchmark: '+cfg.bench, data: bench, borderColor: '#94a3b8', borderDash: [5,5], borderWidth: 1.5, pointRadius: 0, fill: false }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { type: this.isLog ? 'logarithmic' : 'linear', grid: { color: document.body.classList.contains('dark') ? '#2B3139' : '#F0F3F5' }, ticks: { color: '#848E9C' } }, x: { display: false } }, plugins: { legend: { labels: { color: document.body.classList.contains('dark') ? '#EAECEF' : '#1E2329', font: { weight: 'bold' } } } } } });
+        this.chartEq = new Chart(ctx, { type: 'line', data: { labels: res.dates, datasets: [{ label: 'Selected Strategy (Net)', data: res.curve, borderColor: '#FCD535', backgroundColor: 'rgba(252,213,53,0.1)', borderWidth: 3.5, fill: true, pointRadius: 0 }, { label: 'Bench Index (Raw)', data: bench, borderColor: '#94a3b8', borderDash: [5,5], borderWidth: 1.5, pointRadius: 0, fill: false }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { type: this.isLog ? 'logarithmic' : 'linear', grid: { color: document.body.classList.contains('dark') ? '#2B3139' : '#F0F3F5' }, ticks: { color: '#848E9C' } }, x: { display: false } }, plugins: { legend: { labels: { color: document.body.classList.contains('dark') ? '#EAECEF' : '#1E2329', font: { weight: 'bold' } } } } } });
     },
 
     renderDrawdownChart(res){
